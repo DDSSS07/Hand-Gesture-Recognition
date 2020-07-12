@@ -36,14 +36,10 @@ def segmentation(image, threshold=25):
     diff = cv2.absdiff(background.astype("uint8"), image)
 
     # Threshold the diff to obtain the foreground
-    thresholded = cv2.threshold(diff,
-                                threshold,
-                                255,
-                                cv2.THRESH_BINARY)[1]
+    thresholded = cv2.threshold(diff, threshold, 255, cv2.THRESH_BINARY)[1]
 
     # Contours in the thresholded image
-    (_,contours,_) = cv2.findContours(thresholded.copy(),
-                                    cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+    (_,contours,_) = cv2.findContours(thresholded.copy(), cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
 
     # When there are no contours
     if len(contours) == 0:
@@ -71,25 +67,18 @@ def main():
     while(True):
         # Current frame
         (captured, frame) = cam.read()
-
         # Resize frame
         frame = imutils.resize(frame, width = 700)
-
         # Flip to avoid inverted view
         frame = cv2.flip(frame, 1)
-
         # Frame copy
-        copy = frame.copy()
-
-        
+        copy = frame.copy()        
         (height, width) = frame.shape[:2]
-
         # Region of interest
         region = frame[top:bottom, right:left]
-
         # Grayscale
         grayscale = cv2.cvtColor(region, cv2.COLOR_BGR2GRAY)
-        
+    
         #Gaussian Blur
         grayscale = cv2.GaussianBlur(grayscale, (7, 7), 0)
 
@@ -116,8 +105,7 @@ def main():
 
         # Segmented hand_region
         cv2.rectangle(copy, (left, top), (right, bottom), (0,255,0), 2)
-
-        
+      
         frames += 1
 
         # Frame with segmented hand_region
@@ -152,23 +140,10 @@ def showResults(prediction_result, confidence):
     elif prediction_result == 2:
         classification = "Fist"
 
-    cv2.putText(text,"Predicted Class : " + classification, 
-                                            (30, 30), 
-                                            cv2.FONT_HERSHEY_SIMPLEX, 
-                                            1,
-                                            (255, 255, 255),
-                                            2)
+    cv2.putText(text,"Predicted Class : " + classification, (30, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
 
-    cv2.putText(text,"Confidence : " + str(confidence * 100) + '%', 
-                                    (30, 100), 
-                                    cv2.FONT_HERSHEY_SIMPLEX, 
-                                    1,
-                                    (255, 255, 255),
-                                    2)
+    cv2.putText(text,"Confidence : " + str(confidence * 100) + '%', (30, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
     cv2.imshow("Statistics :", text)
-
-
-
 
 # Defining the model
 tf.reset_default_graph()
