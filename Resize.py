@@ -8,8 +8,5 @@ def resize(image):
     img = img.resize((width,hsize), Image.ANTIALIAS)
     img.save(image)
 
-for img in range(0,100):
-    
+for img in range(0,100):    
     resize("Dataset/PalmTest/palm_" + str(img) + '.png')
-
-
