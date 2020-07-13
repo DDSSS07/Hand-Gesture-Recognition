@@ -110,8 +110,8 @@ def main():
                 if start:
                     cv2.imwrite('Capture.png', thresholded)
                     resize('Capture.png')
-                    prediction_result, confidence = predictGesture()
-                    showResults(prediction_result, confidence)
+                    prediction_result, probability = predictGesture()
+                    showResults(prediction_result, probability)
                 cv2.imshow("Theshold", thresholded)
 
         # Segmented hand_region
@@ -140,7 +140,7 @@ def predictGesture():
     prediction_result = model.predict([gray_img.reshape(89, 100, 1)])
     return np.argmax(prediction_result), (np.amax(prediction_result) / (prediction_result[0][0] + prediction_result[0][1] + prediction_result[0][2]))
 
-def showResults(prediction_result, confidence):
+def showResults(prediction_result, probability):
 
     text = np.zeros((300,512,3), np.uint8)
     classification = ""
@@ -152,23 +152,10 @@ def showResults(prediction_result, confidence):
     elif prediction_result == 2:
         classification = "Fist"
 
-    cv2.putText(text,"Predicted Class : " + classification, 
-                                            (30, 30), 
-                                            cv2.FONT_HERSHEY_SIMPLEX, 
-                                            1,
-                                            (255, 255, 255),
-                                            2)
+    cv2.putText(text,"Predicted Class : " + classification, (30, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
 
-    cv2.putText(text,"Confidence : " + str(confidence * 100) + '%', 
-                                    (30, 100), 
-                                    cv2.FONT_HERSHEY_SIMPLEX, 
-                                    1,
-                                    (255, 255, 255),
-                                    2)
+    cv2.putText(text,"Probability : " + str(probability * 100) + '%', (30, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
     cv2.imshow("Statistics :", text)
-
-
-
 
 # Defining the model
 tf.reset_default_graph()
