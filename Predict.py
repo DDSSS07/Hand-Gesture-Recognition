@@ -8,7 +8,6 @@ from PIL import Image
 import cv2
 import imutils
 
-
 background = None
 
 def resize(image):
@@ -36,14 +35,10 @@ def segmentation(image, threshold=25):
     diff = cv2.absdiff(background.astype("uint8"), image)
 
     # Threshold the diff to obtain the foreground
-    thresholded = cv2.threshold(diff,
-                                threshold,
-                                255,
-                                cv2.THRESH_BINARY)[1]
+    thresholded = cv2.threshold(diff, threshold, 255, cv2.THRESH_BINARY)[1]
 
     # Contours in the thresholded image
-    (_,contours,_) = cv2.findContours(thresholded.copy(),
-                                    cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+    (_,contours,_) = cv2.findContours(thresholded.copy(), cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
 
     # When there are no contours
     if len(contours) == 0:
@@ -80,7 +75,6 @@ def main():
 
         # Frame copy
         copy = frame.copy()
-
         
         (height, width) = frame.shape[:2]
 
@@ -99,7 +93,6 @@ def main():
         else:
             # Hand segmentation
             hand_region = segmentation(grayscale)
-
             
             if hand_region is not None:
                 # Unpacking
@@ -116,7 +109,6 @@ def main():
 
         # Segmented hand_region
         cv2.rectangle(copy, (left, top), (right, bottom), (0,255,0), 2)
-
         
         frames += 1
 
