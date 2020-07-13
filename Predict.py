@@ -149,32 +149,44 @@ def showResults(prediction_result, probability):
     cv2.putText(text,"Probability : " + str(probability * 100) + '%', (30, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
     cv2.imshow("Statistics :", text)
 
-# Defining the model
+# Creating CNN Model
 tf.reset_default_graph()
+
+# Convolution Layer
 network=input_data(shape=[None,89,100,1],name='input')
 network=conv_2d(network,32,2,activation='relu')
+# Max Pooling (down-sampling)
 network=max_pool_2d(network,2)
 network=conv_2d(network,64,2,activation='relu')
 network=max_pool_2d(network,2)
 
 network=conv_2d(network,128,2,activation='relu')
+# Max Pooling (down-sampling)
 network=max_pool_2d(network,2)
 
 network=conv_2d(network,256,2,activation='relu')
+# Max Pooling (down-sampling)
 network=max_pool_2d(network,2)
 
 network=conv_2d(network,256,2,activation='relu')
+# Max Pooling (down-sampling)
 network=max_pool_2d(network,2)
 
 network=conv_2d(network,128,2,activation='relu')
+# Max Pooling (down-sampling)
 network=max_pool_2d(network,2)
 
 network=conv_2d(network,64,2,activation='relu')
+# Max Pooling (down-sampling)
 network=max_pool_2d(network,2)
 
+# Fully connected layer
 network=fully_connected(network,1000,activation='relu')
+
+# Apply Dropout
 network=dropout(network,0.75)
 
+# Fully connected layer
 network=fully_connected(network,3,activation='softmax')
 
 network=regression(network,optimizer='adam',learning_rate=0.001,loss='categorical_crossentropy',name='regression')
