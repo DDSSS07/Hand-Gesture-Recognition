@@ -152,7 +152,7 @@ def showResults(prediction_result, probability):
 # Creating CNN Model
 tf.reset_default_graph()
 
-# Convolution Layer
+# Creating Convolution Layer
 network=input_data(shape=[None,89,100,1],name='input')
 network=conv_2d(network,32,2,activation='relu')
 # Max Pooling (down-sampling)
@@ -194,6 +194,6 @@ network=regression(network,optimizer='adam',learning_rate=0.001,loss='categorica
 model=tflearn.DNN(network,tensorboard_verbose=0)
 
 # Loading the trained model
-model.load("TrainedModel/GestureRecogModel.tfl")
+model.load("TrainedModel/Hand_Gesture_Recognition.tfl")
 
 main()
