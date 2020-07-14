@@ -150,10 +150,20 @@ def showResults(prediction_result, probability):
     cv2.imshow("Statistics :", text)
 
 # Creating CNN Model
-tf.reset_default_graph()
+tf.reset_default_graph() # Clears the default graph stack and resets the global default graph.
+
+# The input_data is a layer that will be used as the input layer to our network. 
+network=input_data(shape=[None,89,100,1],name='input')
+
+# Conv2D wrapper, with bias and relu activation
+# relu removes all the negative values from the convolution and all the positive values remain the same but all the negative values get changed to zero
+# Max Pooling returns the maximum value from the portion of the image covered by the Kernel and performs as a Noise Suppressant. 
+# It discards the noisy activations altogether and also performs de-noising along with dimensionality reduction.
+
+# conv2d() is the TensorFlow function used to build a 2D convolutional layer as part of your CNN architecture.
 
 # Creating Convolution Layer
-network=input_data(shape=[None,89,100,1],name='input')
+
 network=conv_2d(network,32,2,activation='relu')
 # Max Pooling (down-sampling)
 network=max_pool_2d(network,2)
@@ -180,17 +190,21 @@ network=conv_2d(network,64,2,activation='relu')
 # Max Pooling (down-sampling)
 network=max_pool_2d(network,2)
 
-# Fully connected layer
+# Creating Fully connected layer
 network=fully_connected(network,1000,activation='relu')
 
+# Dropout is a regularization method that approximates training a large number of neural networks with different architectures in parallel.
 # Apply Dropout
 network=dropout(network,0.75)
 
 # Fully connected layer
 network=fully_connected(network,3,activation='softmax')
 
+# With TFLearn estimators
+# Define loss and optimizer
 network=regression(network,optimizer='adam',learning_rate=0.001,loss='categorical_crossentropy',name='regression')
 
+# Train the Network using Classifier
 model=tflearn.DNN(network,tensorboard_verbose=0)
 
 # Loading the trained model
