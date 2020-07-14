@@ -92,7 +92,7 @@ for img in range(0, 100):
     labels.append([0, 0, 1])
     
 # Creating CNN Model
-tf.reset_default_graph()      #Clears the default graph stack and resets the global default graph.
+tf.reset_default_graph()      # Clears the default graph stack and resets the global default graph.
 
 # The input_data is a layer that will be used as the input layer to our network. 
 network=input_data(shape=[None,89,100,1],name='input')
@@ -149,7 +149,7 @@ network=fully_connected(network,3,activation='softmax')
 # Define loss and optimizer
 network=regression(network,optimizer='adam',learning_rate=0.001,loss='categorical_crossentropy',name='regression')
 
-# Trainn the Network using Classifier
+# Train the Network using Classifier
 model=tflearn.DNN(network,tensorboard_verbose=0)
 
 # Shuffle Training Data
@@ -159,4 +159,4 @@ load_images, vectors = shuffle(load_images, vectors, random_state=0)
 # Training the model
 model.fit(load_images, vectors, n_epoch=50, validation_set = (test_images, labels), snapshot_step=100, show_metric=True, run_id='convnet_coursera')
 
-model.save("Trained_Model/Hand_Gesture_Recognition_Model.tfl")
+model.save("Trained_Model/Hand_Gesture_Recognition.tfl")
