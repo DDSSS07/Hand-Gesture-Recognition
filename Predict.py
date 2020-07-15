@@ -181,7 +181,7 @@ network=input_data(shape=[None,89,100,1],name='input')
 # Max Pooling returns the maximum value from the portion of the image covered by the Kernel and performs as a Noise Suppressant. 
 # It discards the noisy activations altogether and also performs de-noising along with dimensionality reduction.
 
-# conv2d() is the TensorFlow function used to build a 2D convolutional layer as part of your CNN architecture.
+# Building 2D convolutional layer into architecture of CNN.
 
 # Creating Convolution Layer
 
