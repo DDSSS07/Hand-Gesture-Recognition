@@ -1,11 +1,16 @@
+# for building CNN architechture
 import tensorflow as tf
 import tflearn
+# TFLearn brings "layers" that represent an abstract set of operations to make building neural networks more convenient
 from tflearn.layers.conv import conv_2d,max_pool_2d
 from tflearn.layers.core import input_data,dropout,fully_connected
 from tflearn.layers.estimator import regression
+# Numpy to interpret the image as binary array
 import numpy as np
+# For performing operations on image
 from PIL import Image
 import cv2
+# For resizing the image
 import imutils
 
 # Setting an empty background to be updated later
@@ -114,50 +119,56 @@ def main():
                     # Create a file with the captured frame
                     cv2.imwrite('Capture.png', thresholded)
                     resize('Capture.png')
-                    # 
+                    # Predicting the class and probability of the class for the curr
                     prediction_result, probability = predictGesture()
                     showResults(prediction_result, probability)
                 cv2.imshow("Theshold", thresholded)
 
-        # Segmented
+        # Create a window to display the camera
         cv2.rectangle(copy, (left, top), (right, bottom), (0,255,0), 2)
         
         frames += 1
 
-        # Frame with segmented hand region
+        # Display the current frame
         cv2.imshow('Video Feed', copy)
 
         # User input
         key = cv2.waitKey(1) & 0xFF
 
-        # Quit
+        # To Quit capturing
         if key == ord('q'):
             break
-        
+            
+        # To start capturing
         if key == ord('s'):
             start = True
 
 def predictGesture():
-    # Predict
+    # To Predict the class of each gesture using the CNN model
     image = cv2.imread('Capture.png')
     gray_img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    # Check with the layers of CNN ang get the probable class of gesture
     prediction_result = model.predict([gray_img.reshape(89, 100, 1)])
+    # Calculating the probability of the class by using the binary array of the iamge
     return np.argmax(prediction_result), (np.amax(prediction_result) / (prediction_result[0][0] + prediction_result[0][1] + prediction_result[0][2]))
 
 def showResults(prediction_result, probability):
 
     text = np.zeros((300,512,3), np.uint8)
     classification = ""
-
+    
+    # Classifying the gesture based on the result from prediction
     if prediction_result == 0:
         classification = "Swing"
     elif prediction_result == 1:
         classification = "Palm"
     elif prediction_result == 2:
         classification = "Fist"
-
+    
+    # Displaying the predicted class as text on the image
     cv2.putText(text,"Predicted Class : " + classification, (30, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-
+    
+    # Displaying the probability of the class on the image
     cv2.putText(text,"Probability : " + str(probability * 100) + '%', (30, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
     cv2.imshow("Statistics :", text)
 
