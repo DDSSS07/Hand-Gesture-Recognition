@@ -1,7 +1,6 @@
 # for building CNN architechture
 import tensorflow as tf
 import tflearn
-# TFLearn brings "layers" that represent an abstract set of operations to make building neural networks more convenient
 from tflearn.layers.conv import conv_2d,max_pool_2d
 from tflearn.layers.core import input_data,dropout,fully_connected
 from tflearn.layers.estimator import regression
@@ -16,7 +15,7 @@ import imutils
 # Setting an empty background to be updated later
 background = None
 
-# To reduce the computation complexity we are the image size
+# To reduce the computation complexity we are reducing the image size
 def resize(image):
     width = 100
     img = Image.open(image)
@@ -48,8 +47,8 @@ def segmentation(image, threshold=25):
     thresholded = cv2.threshold(diff, threshold, 255, cv2.THRESH_BINARY)[1]
 
     # Finding the contours in the thresholded image (To recognize the hand region)
-    # Contours can be explained simply as a curve joining all the continuous points (along the boundary), having same color or intensity. 
-    # The contours are a useful tool for shape analysis and object detection and recognition.
+    # Contours are a curve joining all the continuous points (forming a boundary), having same color or intensity. 
+    # Contours are a used for analyzing the shape and detecting and recognizing the object.
     (_,contours,_) = cv2.findContours(thresholded.copy(), cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
 
     # When no contours are found exit
@@ -89,7 +88,7 @@ def main():
         # Copy the current frame
         copy = frame.copy()
         
-        # Find the dimensions of the frame
+        # Split the frame's dimensions to height and width
         (height, width) = frame.shape[:2]
 
         # Looking for the hand region
@@ -106,8 +105,8 @@ def main():
         if frames < 30:
             average(grayscale, avg_weight)
         else:
-            # Segmenting the hand region from the background
-            hand_region = segmentation(grayscale)
+            # Separating the hand from the background
+            hand_region = segmcentation(grayscale)
             
             if hand_region is not None:
                 # Split the values from hand region into a tuple
@@ -124,7 +123,7 @@ def main():
                     showResults(prediction_result, probability)
                 cv2.imshow("Theshold", thresholded)
 
-        # Create a window to display the camera
+        # To display the live feed create a window
         cv2.rectangle(copy, (left, top), (right, bottom), (0,255,0), 2)
         
         frames += 1
@@ -149,7 +148,7 @@ def predictGesture():
     gray_img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     # Check with the layers of CNN ang get the probable class of gesture
     prediction_result = model.predict([gray_img.reshape(89, 100, 1)])
-    # Calculating the probability of the class by using the binary array of the iamge
+    # Calculating the probability of the class by using the binary array of the image
     return np.argmax(prediction_result), (np.amax(prediction_result) / (prediction_result[0][0] + prediction_result[0][1] + prediction_result[0][2]))
 
 def showResults(prediction_result, probability):
@@ -157,7 +156,6 @@ def showResults(prediction_result, probability):
     text = np.zeros((300,512,3), np.uint8)
     classification = ""
     
-    # Classifying the gesture based on the result from prediction
     if prediction_result == 0:
         classification = "Swing"
     elif prediction_result == 1:
