@@ -176,7 +176,7 @@ tf.reset_default_graph() # Clears the default graph stack and resets the global 
 # The input_data is a layer that will be used as the input layer to our network. 
 network=input_data(shape=[None,89,100,1],name='input')
 
-# Conv2D wrapper, with bias and relu activation
+# Designing a Conv2D wrapper consisting of bias along with relu activation
 # relu removes all the negative values from the convolution and all the positive values remain the same but all the negative values get changed to zero
 # Max Pooling returns the maximum value from the portion of the image covered by the Kernel and performs as a Noise Suppressant. 
 # It discards the noisy activations altogether and also performs de-noising along with dimensionality reduction.
