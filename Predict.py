@@ -229,6 +229,6 @@ network=regression(network,optimizer='adam',learning_rate=0.001,loss='categorica
 model=tflearn.DNN(network,tensorboard_verbose=0)
 
 # Loading the trained model
-model.load("TrainedModel/Hand_Gesture_Recognition.tfl")
+model.load("TrainedModel/GestureRecogModel.tfl")
 
 main()
