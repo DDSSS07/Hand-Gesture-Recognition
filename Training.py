@@ -99,7 +99,7 @@ network=input_data(shape=[None,89,100,1],name='input')
 
 # Creating Convolution Layer
 
-# Conv2D wrapper, with bias and relu activation
+# Designing a Conv2D wrapper consisting of bias along with relu activation
 # relu removes all the negative values from the convolution and all the positive values remain the same but all the negative values get changed to zero
 # Max Pooling returns the maximum value from the portion of the image covered by the Kernel and performs as a Noise Suppressant. 
 # It discards the noisy activations and also performs dimensionality reduction.
