@@ -157,4 +157,4 @@ load_images, vectors = shuffle(load_images, vectors, random_state=0)
 # Training the model
 model.fit(load_images, vectors, n_epoch=50, validation_set = (test_images, labels), snapshot_step=100, show_metric=True, run_id='convnet_coursera')
 
-model.save("Trained_Model/Hand_Gesture_Recognition.tfl")
+model.save("TrainedModel/GestureRecogModel.tfl")
